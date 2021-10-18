@@ -1,0 +1,43 @@
+.img-bg {
+    background: url('../assets/prapor.png');
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.logo {
+    width: 200px;
+    height: 100px;
+}
+
+.logo-wrap {
+    height: 250px;
+    width: 85%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-button {
+    color: black;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.login-button:hover {
+    color: grey;
+}
+
+.login-button i {
+    padding: 0 5px;
+}
+
+.heading {
+    text-shadow: 0 0 40px rgba(255,255,255, 0.5);
+}
+
+.search-form {
+    width: 50%;
+    margin: 0 auto;
+}
