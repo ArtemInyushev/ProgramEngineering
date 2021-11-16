@@ -1,38 +1,43 @@
 require('dotenv').config();
 
-const sql = require('mssql');
+const sql = require("mssql/msnodesqlv8");
 
 const config = {
-    server: process.env.SERVER,
-    authentication: { type: 'default', options: { userName: process.env.DB_USER, password: process.env.DB_PASS } },
-    options: {
-        enableArithAbort: true,
-        cryptoCredentialsDetails: {
-            minVersion: 'TLSv1'
-        }
-    },
-    connectionTimeout: 500000,
-    requestTimeout: 20000,
-    pool: {
-        idleTimeoutMillis: 300000,
-        max: 100
-    }
-}
+    database: process.env.DB_NAME,
+	server: process.env.DB_SERVER,
+	driver: "msnodesqlv8",
+	options: {
+		trustedConnection: true
+	}
+};
 
-const poolPromise = sql.connect(config);
+const connectionPool = new sql.ConnectionPool(config)
+    .connect()
+    .then(pool => {
+        console.log('Connected to database successfully');
+        return pool;
+    })
+    .catch(err => {
+        console.log(`Database Connection Failed!\n\n${err}\n\nProgram finished`);
+        process.exit(1);
+    });
 
 const transformDataType = (type) => {
     switch(type) {
         case "string": return sql.NVarChar;
-        default: return sql.BigInt;
+        default: return sql.Int;
     }
-}
+};
 
-const runQuery = (query) => poolPromise.then(() => sql.query(query));
+const runQuery = async (command) => {
+    const pool = await connectionPool;
+    return await pool.query(command);
+    //const request = pool.request();
+    //return await request.query(command);
+};
 
 const runPreparedQuery = async (query, args) => {
-    let pool = await poolPromise;
-    let prepQuery = new sql.PreparedStatement(pool);
+    let prepQuery = new sql.PreparedStatement(await connectionPool);
     Object.keys(args).forEach(arg => {
         prepQuery.input(arg, transformDataType(typeof args[arg]));
     })
@@ -41,43 +46,14 @@ const runPreparedQuery = async (query, args) => {
     await prepQuery.unprepare();
 
     return result;
-}
+};
 
-const fetchQuery = (query, defaultKey) => async (req, res) => {
-    try {
-        let resp = await runQuery(query);
-        if(defaultKey) res.status(200).json({ titles: defaultTitles[defaultKey], data: resp.recordset });
-        else res.status(200).json(resp.recordset);
-    } catch(err) {
-        res.sendStatus(500)
-    }
-}
-
-// const fetchPreparedQuery = (query, params) => async (req, res) => {
-//     try {
-//         let resp = db.runPreparedQuery(query, params);
-//         res.status(200).json(resp.recordset);
-//     } catch(err) {
-//         res.sendStatus(500)
-//     }
-// }
-
-// const fetchPreparedQueryArray = (query, params) => async(req, res) => {
-//     try {
-//         let resp = await Promise.all(params.map(param => db.runPreparedQuery(query, param)));
-//         res.status(200).json(resp.map(row => row.recordset[0]));
-//     } catch(err) {
-//         console.log(err)
-//         res.sendStatus(500);
-//     }
-// }
-
-process.on("beforeExit", () => {
-    poolPromise.then(() => sql.close());
-})
+process.on("beforeExit", async () => {
+    const pool = await connectionPool;
+    await pool.close();
+});
 
 module.exports = {
     runQuery,
     runPreparedQuery,
-    fetchQuery
-}
+};
