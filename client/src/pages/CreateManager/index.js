@@ -15,7 +15,7 @@ const CreateManager = () => {
             {redirect && <Redirect to={`/managers`} />}
             <h4 className="text-center text-dark mt-4 mb-4">Створення реєстратора:</h4>
             <Formik
-            initialValues={{ fullname: '', agency: 0, date: '', birthdate: '', number: 0, series: '', taxNumber: 0, email: '', password: '', error: '' }}
+            initialValues={{ fullname: '', organId: 0, date: '', birthday: '', passportNumber: 0, seriesNumber: '', taxpayerNumber: 0, email: '', password: '', error: '' }}
             onSubmit={async (values, { setSubmitting, setErrors }) => {
                 try {
                     let resp = await createManagerQuery({...values });
@@ -45,10 +45,10 @@ const CreateManager = () => {
                         </div>
                         <div className="col-4">
                             <div className="mb-3">
-                                <Field name="number" label="Номер паспорта:" id="number" validate={required} placeholder="Номер паспорта" type="number" component={FormInput} />
+                                <Field name="passportNumber" label="Номер паспорта:" id="passportNumber" validate={required} placeholder="Номер паспорта" type="number" component={FormInput} />
                             </div>
                             <div className="mb-3">
-                                <Field name="agency" label="Орган, що видав:" id="agency" validate={required} placeholder="Орган, що видав" type="number" component={FormInput} />
+                                <Field name="organId" label="Орган, що видав:" id="organId" validate={required} placeholder="Орган, що видав" type="number" component={FormInput} />
                             </div>
                             <div className="mb-3">
                                 <Field name="date" label="Дата видачі:" id="date" validate={required} type="date" component={FormInput} />
@@ -56,13 +56,13 @@ const CreateManager = () => {
                         </div>
                         <div className="col-4 mb-3">
                         <div className="mb-3">
-                                <Field name="birthdate" label="Дата народження:" id="birthdate" validate={required} type="date" component={FormInput} />
+                                <Field name="birthday" label="Дата народження:" id="birthday" validate={required} type="date" component={FormInput} />
                             </div>
                             <div className="mb-3">
-                                <Field name="series" label="Серія паспорту (якщо є):" id="series" placeholder="Серія паспорту" type="number" component={FormInput} />
+                                <Field name="seriesNumber" label="Серія паспорту (якщо є):" id="seriesNumber" placeholder="Серія паспорту" type="number" component={FormInput} />
                             </div>
                             <div className="mb-3">
-                                <Field name="taxNumber" label="Номер платника податків:" id="taxNumber" validate={required} placeholder="Номер платника податків" type="number" component={FormInput} />
+                                <Field name="taxpayerNumber" label="Номер платника податків:" id="taxpayerNumber" validate={required} placeholder="Номер платника податків" type="number" component={FormInput} />
                             </div>
                         </div>
                         <ErrorMessage name="error" className="text-center text-danger mt-2 mb-5" component="div" />

@@ -50,10 +50,10 @@ const EditApostille = ({ match }) => {
                                 <Field name="number" label="Номер апостиля:" id="number" validate={required} placeholder="Номер апостиля" type="number" component={FormInput} />
                             </div>
                             <div className="mb-3">
-                                <Field name="city" label="Місто:" id="city" validate={required} placeholder="Місто" type="text" component={FormInput} />
+                                <Field name="cityName" label="Місто:" id="cityName" validate={required} placeholder="Місто" type="text" component={FormInput} />
                             </div>
                             <div className="mb-3">
-                                <Field name="country" label="Країна:" id="country" validate={required} placeholder="Країна" type="text" component={FormInput} />
+                                <Field name="countryName" label="Країна:" id="countryName" validate={required} placeholder="Країна" type="text" readOnly component={FormInput} />
                             </div>
                         </div>
                         <div className="col-4">
@@ -72,13 +72,7 @@ const EditApostille = ({ match }) => {
                                 <Field name="sertName" label="Завірив:" id="signerName" validate={required} placeholder="Підписав" type="text" component={FormInput} />
                             </div>
                             <div className="mb-3">
-                                <Field name="sertPosition" label="Посада:" id="signerPosition" validate={required} placeholder="Посада" type="text" component={FormInput} />
-                            </div>
-                            <div className="mb-3">
                                 <Field name="sertInst" label="Установа:" id="signerInst" validate={required} placeholder="Установа" type="text" component={FormInput} />
-                            </div>
-                            <div className="mb-3">
-                                <Field name="signType" label="Тип підпису:" id="signType" placeholder="Тип підпису" type="number" max="1" min="0" component={FormInput} />
                             </div>
                         </div>
                         <ErrorMessage name="error" className="text-center text-danger mt-2 mb-5" component="div" />

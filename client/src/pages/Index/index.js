@@ -10,7 +10,7 @@ const Index = () => {
     return (
         <>
             <Formik
-            initialValues={{ number: 0, date: null, error: '' }}
+            initialValues={{ number: '', date: '', error: '' }}
             onSubmit={async (values, { setSubmitting, setErrors }) => {
                 try {
                     let { number, date } = values;
@@ -56,7 +56,6 @@ const Index = () => {
                             <th scope="col">Посада</th>
                             <th scope="col">Установа</th>
                             <th scope="col">Проставив</th>
-                            <th scope="col">Посада</th>
                             <th scope="col">Установа</th>
                             <th scope="col">Дата проставлення</th>
                             <th scope="col">Тип проставлення</th>
@@ -65,19 +64,18 @@ const Index = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {state.map((item, index) => item.active === 0 ? <tr>
+                        {state.map((item, index) => item.isActive ? <tr>
                             <th scope="row">{++index}</th>
                             <td>{item.number}</td>
                             <td>{item.signerName}</td>
                             <td>{item.signerPosition}</td>
                             <td>{item.signerInst}</td>
                             <td>{item.sertName}</td>
-                            <td>{item.sertPosition}</td>
                             <td>{item.sertInst}</td>
-                            <td>{item.date}</td>
-                            <td>{item.signType === 1 ? "Печатка" : "Штамп"}</td>
-                            <td>{item.city}</td>
-                            <td>{item.country}</td>
+                            <td>{item.date.substr(0,10)}</td>
+                            <td>{"Печатка"}</td>
+                            <td>{item.cityName}</td>
+                            <td>{item.countryName}</td>
                         </tr> : <td colspan="11">Шуканий апостиль анульваний</td>)}
                     </tbody>
                 </table> : <div className="text-center text-dark">За заданими даними нічого не знайдено</div>

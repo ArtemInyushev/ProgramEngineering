@@ -18,7 +18,7 @@ const EditManager = ({ match }) => {
             setState(r);
         }
         if(!state) getData();
-    }, [match.params.id, state])
+    }, [match.params.id, state]);
 
     return (
         <>
@@ -55,24 +55,24 @@ const EditManager = ({ match }) => {
                         </div>
                         <div className="col-4">
                             <div className="mb-3">
-                                <Field name="number" label="Номер паспорта:" id="number" validate={required} placeholder="Номер паспорта" type="number" component={FormInput} />
+                                <Field name="passportNumber" label="Номер паспорта:" id="passportNumber" validate={required} placeholder="Номер паспорта" type="number" component={FormInput} />
                             </div>
                             <div className="mb-3">
-                                <Field name="agency" label="Орган, що видав:" id="agency" validate={required} placeholder="Орган, що видав" type="number" component={FormInput} />
+                                <Field name="organId" label="Орган, що видав:" id="organId" validate={required} placeholder="Орган, що видав" type="number" component={FormInput} />
                             </div>
                             <div className="mb-3">
                                 <Field name="date" label="Дата видачі:" id="date" validate={required} type="date" component={FormInput} />
                             </div>
                         </div>
                         <div className="col-4 mb-3">
-                        <div className="mb-3">
-                                <Field name="birthdate" label="Дата народження:" id="birthdate" validate={required} type="date" component={FormInput} />
+                            <div className="mb-3">
+                                <Field name="birthday" label="Дата народження:" id="birthday" validate={required} type="date" component={FormInput} />
                             </div>
                             <div className="mb-3">
-                                <Field name="series" label="Серія паспорту (якщо є):" id="series" placeholder="Серія паспорту" type="number" component={FormInput} />
+                                <Field name="seriesNumber" label="Серія паспорту (якщо є):" id="seriesNumber" placeholder="Серія паспорту" type="number" component={FormInput} />
                             </div>
                             <div className="mb-3">
-                                <Field name="taxNumber" label="Номер платника податків:" id="taxNumber" validate={required} placeholder="Номер платника податків" type="number" component={FormInput} />
+                                <Field name="taxpayerNumber" label="Номер платника податків:" id="taxpayerNumber" validate={required} placeholder="Номер платника податків" type="number" component={FormInput} />
                             </div>
                         </div>
                         <ErrorMessage name="error" className="text-center text-danger mt-2 mb-5" component="div" />

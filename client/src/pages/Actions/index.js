@@ -9,6 +9,7 @@ const Actions = () => {
     useEffect(() => {
         const getData = async () => {
             let data = await getRecentActionsQuery();
+            console.log(data);
             setState(data);
         }
         if(!state) getData();
@@ -32,10 +33,10 @@ const Actions = () => {
                         {state.map((item, index) => <tr key={index}>
                             <th scope="row">{++index}</th>
                             <td>{item.fullname}</td>
-                            <td>{new Date(item.date).toLocaleString()}</td>
-                            <td>{item.type}</td>
-                            <td>{item.number}</td>
-                            <td>{item.apostilleDate}</td>
+                            <td>{item.date.substr(0, 10)}</td>
+                            <td>{item.actionName}</td>
+                            <td>{item.apostilleId}</td>
+                            <td>{item.apostilleDate == null ? '': item.apostilleDate.substr(0,10)}</td>
                         </tr>)}
                     </tbody>
                 </table> : <div className="container-fluid d-flex justify-content-center align-items-center">

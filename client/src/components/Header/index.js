@@ -18,7 +18,7 @@ const Header = ({ hasAuth, user, logout }) => {
             <div className="d-flex align-items-center">
                 <Link to="/"><img src={logo} alt="logo" className="logo" /></Link>
             </div>
-            {hasAuth && user.role === 1 && <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            {hasAuth && user.roleId === 1 && <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
                     <Link className="nav-link" to="/apostilles">Апостилі</Link>
                 </li>
@@ -26,7 +26,7 @@ const Header = ({ hasAuth, user, logout }) => {
                     <Link className="nav-link" to='/create'>Створити апостиль</Link>
                 </li>
             </ul>}
-            {hasAuth && user.role === 2 && <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            {hasAuth && user.roleId === 2 && <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
                     <Link className="nav-link" to="/managers">Реєстратори</Link>
                 </li>

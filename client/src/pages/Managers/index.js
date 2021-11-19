@@ -21,7 +21,7 @@ const Managers = () => {
 
         if(res.resultCode === 0) {
             setState(state.map(item => {
-                if(item.id[0] === id) item.active = 1;
+                if(item.id[0] === id) item.isActive = false;
                 return item;
             }));
         } else {
@@ -36,7 +36,7 @@ const Managers = () => {
         if(res.resultCode === 0) {
             setState(state.map(item => {
                 debugger;
-                if(item.id[0] === id) item.active = 0;
+                if(item.id[0] === id) item.isActive = true;
                 return item;
             }));
         } else {
@@ -72,17 +72,17 @@ const Managers = () => {
                             <td>{item.email}</td>
                             <td>{item.password}</td>
                             <td>{item.fullname}</td>
-                            <td>{item.number}</td>
-                            <td>{item.agency}</td>
-                            <td>{item.date}</td>
-                            {state.some(i => i.series !== null) && <td>{item.series}</td>}
-                            <td>{item.taxNumber}</td>
-                            <td>{item.birthdate}</td>
-                            <td>{item.active === 0 ? 'Активований' : 'Деактивований' }</td>
+                            <td>{item.passportNumber}</td>
+                            <td>{item.organId}</td>
+                            <td>{item.date.substr(0,10)}</td>
+                            {state.some(i => i.seriesNumber !== null) && <td>{item.seriesNumber}</td>}
+                            <td>{item.taxpayerNumber}</td>
+                            <td>{item.birthday.substr(0,10)}</td>
+                            <td>{item.isActive ? 'Активований' : 'Деактивований' }</td>
                             <td>
                                 <Link className="btn btn-primary" to={`/edit/manager/${item.id[0]}`}>Редагувати</Link>
-                                {item.active === 0 && <button onClick={() => disable(item.id[0])} className="btn btn-dark" type="button">Деактивувати</button>}
-                                {item.active === 1 && <button onClick={() => enable(item.id[0])} className="btn btn-dark" type="button">Активувати</button>}
+                                {item.isActive && <button onClick={() => disable(item.id[0])} className="btn btn-dark" type="button">Деактивувати</button>}
+                                {!item.isActive && <button onClick={() => enable(item.id[0])} className="btn btn-dark" type="button">Активувати</button>}
                             </td>
                         </tr>)}
                     </tbody>

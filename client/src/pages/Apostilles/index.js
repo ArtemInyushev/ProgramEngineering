@@ -21,7 +21,7 @@ const Apostilles = () => {
 
         if(res.resultCode === 0) {
             setState(state.map(item => {
-                if(item.id[0] === id) item.active = 1;
+                if(item.id[0] === id) item.isActive = false;
                 return item;
             }));
         } else {
@@ -43,7 +43,6 @@ const Apostilles = () => {
                             <th scope="col">Посада</th>
                             <th scope="col">Установа</th>
                             <th scope="col">Проставив</th>
-                            <th scope="col">Посада</th>
                             <th scope="col">Установа</th>
                             <th scope="col">Тип проставлення</th>
                             <th scope="col">Дата проставлення</th>
@@ -58,19 +57,18 @@ const Apostilles = () => {
                             <th scope="row">{++index}</th>
                             <td>{item.number}</td>
                             <td>{item.fullname[0]}</td>
-                            <td>{item.position[0]}</td>
-                            <td>{item.institution[0]}</td>
+                            <td>{item.positionName}</td>
+                            <td>{item.institutionName[0]}</td>
                             <td>{item.fullname[1]}</td>
-                            <td>{item.position[1]}</td>
-                            <td>{item.institution[1]}</td>
-                            <td>{Number(item.signType) === 1 ? "Штамп" : "Печатка"}</td>
-                            <td>{item.date}</td>
-                            <td>{item.city}</td>
-                            <td>{item.country}</td>
-                            <td>{item.active === 0 ? 'Діючий' : 'Анульований' }</td>
+                            <td>{item.institutionName[1]}</td>
+                            <td>{"Печатка"}</td>
+                            <td>{item.date.substr(0, 10)}</td>
+                            <td>{item.cityName}</td>
+                            <td>{item.countryName}</td>
+                            <td>{item.isActive ? 'Діючий' : 'Анульований' }</td>
                             <td>
-                                {item.active === 0 && <Link className="btn btn-primary" to={`/edit/${item.id[0]}`}>Редагувати</Link>}
-                                {item.active === 0 && <button onClick={() => disable(item.id[0])} className="btn btn-dark" type="button">Анулювати</button>}
+                                {item.isActive && <Link className="btn btn-primary" to={`/edit/${item.id[0]}`}>Редагувати</Link>}
+                                {item.isActive && <button onClick={() => disable(item.id[0])} className="btn btn-dark" type="button">Анулювати</button>}
                             </td>
                         </tr>)}
                     </tbody>

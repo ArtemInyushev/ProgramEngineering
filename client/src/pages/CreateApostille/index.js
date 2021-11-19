@@ -15,7 +15,7 @@ const CreateApostille = () => {
             {redirect && <Redirect to={`/apostilles`} />}
             <h4 className="text-center text-dark mt-4 mb-4">Створення апостиля:</h4>
             <Formik
-            initialValues={{ date: '', number: 0, city: '', country: '', signerName: '', signerPosition: '', signerInst: '', sertName: '', sertPosition: '', sertInst: '', signType: '', error: '' }}
+            initialValues={{ date: '', number: 0, cityName: '', countryName: '', signerName: '', signerPosition: '', signerInst: '', sertName: '', sertPosition: '', sertInst: '', signType: '', error: '' }}
             onSubmit={async (values, { setSubmitting, setErrors }) => {
                 try {
                     let resp = await createApostilleQuery({...values });
@@ -40,10 +40,10 @@ const CreateApostille = () => {
                                 <Field name="number" label="Номер апостиля:" id="number" validate={required} placeholder="Номер апостиля" type="number" component={FormInput} />
                             </div>
                             <div className="mb-3">
-                                <Field name="city" label="Місто:" id="city" validate={required} placeholder="Місто" type="text" component={FormInput} />
+                                <Field name="cityName" label="Місто:" id="cityName" validate={required} placeholder="Місто" type="text" component={FormInput} />
                             </div>
                             <div className="mb-3">
-                                <Field name="country" label="Країна:" id="country" validate={required} placeholder="Країна" type="text" component={FormInput} />
+                                <Field name="countryName" label="Країна:" id="countryName" validate={required} placeholder="Країна" type="text" component={FormInput} />
                             </div>
                         </div>
                         <div className="col-4">
@@ -51,10 +51,10 @@ const CreateApostille = () => {
                                 <Field name="signerName" label="Підписав:" id="signerName" validate={required} placeholder="Підписав" type="text" component={FormInput} />
                             </div>
                             <div className="mb-3">
-                                <Field name="signerPosition" label="Посада:" id="signerPosition" validate={required} placeholder="Посада" type="text" component={FormInput} />
+                                <Field name="signerPosition" label="Посада:" id="signerPosition" validate={required} placeholder="Посада(номер)" type="number" component={FormInput} />
                             </div>
                             <div className="mb-3">
-                                <Field name="signerInst" label="Установа:" id="signerInst" validate={required} placeholder="Установа" type="text" component={FormInput} />
+                                <Field name="signerInst" label="Установа:" id="signerInst" validate={required} placeholder="Установа(номер)" type="number" component={FormInput} />
                             </div>
                         </div>
                         <div className="col-4 mb-3">
@@ -62,13 +62,7 @@ const CreateApostille = () => {
                                 <Field name="sertName" label="Завірив:" id="signerName" validate={required} placeholder="Підписав" type="text" component={FormInput} />
                             </div>
                             <div className="mb-3">
-                                <Field name="sertPosition" label="Посада:" id="signerPosition" validate={required} placeholder="Посада" type="text" component={FormInput} />
-                            </div>
-                            <div className="mb-3">
-                                <Field name="sertInst" label="Установа:" id="signerInst" validate={required} placeholder="Установа" type="text" component={FormInput} />
-                            </div>
-                            <div className="mb-3">
-                                <Field name="signType" label="Тип підпису:" id="signType" placeholder="Тип підпису" type="number" max="1" min="0" component={FormInput} />
+                                <Field name="sertInst" label="Установа:" id="signerInst" validate={required} placeholder="Установа(номер)" type="number" component={FormInput} />
                             </div>
                         </div>
                         <ErrorMessage name="error" className="text-center text-danger mt-2 mb-5" component="div" />
