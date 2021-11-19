@@ -1,73 +1,112 @@
-const findApostilleQuery = `SELECT A.id, A.country, A.date, A.city, A.number, A.active, B.fullname AS signerName, B.position AS signerPosition, B.institution AS signerInst, C.fullname AS sertName, C.position AS sertPosition, C.institution AS sertInst, C.signType FROM Register.dbo.Apostille A 
-FULL OUTER JOIN Register.dbo.Signers B ON A.signer = B.id
-FULL OUTER JOIN Register.dbo.Sertifiers C ON A.sertifier = C.id
+const findApostilleQuery = `SELECT A.id, E.countryName, A.date, D.cityName, A.number, A.isActive, B.fullname AS signerName, 
+F.positionName AS signerPosition, I.institutionName AS signerInst, C.fullname AS sertName, 
+J.institutionName AS sertInst FROM ProgramEngineering.dbo.Apostilles A 
+FULL OUTER JOIN ProgramEngineering.dbo.Signers B ON A.signerId = B.id
+FULL OUTER JOIN ProgramEngineering.dbo.Certifiers C ON A.certifierId = C.id 
+INNER JOIN ProgramEngineering.dbo.Cities D ON A.cityId = D.id 
+INNER JOIN ProgramEngineering.dbo.Countries E ON D.countryId = E.id 
+INNER JOIN ProgramEngineering.dbo.Positions F ON B.positionId = F.id
+INNER JOIN ProgramEngineering.dbo.Institutions I ON B.institutionId = I.id
+INNER JOIN ProgramEngineering.dbo.Institutions J ON C.institutionId = J.id
 WHERE A.number = @number AND A.date LIKE @date`;
-const checkApostilleQuery = `SELECT A.id, A.country, A.date, A.city, A.number, A.active, B.fullname AS signerName, B.position AS signerPosition, B.institution AS signerInst, C.fullname AS sertName, C.position AS sertPosition, C.institution AS sertInst, C.signType FROM Register.dbo.Apostille A 
-FULL OUTER JOIN Register.dbo.Signers B ON A.signer = B.id
-FULL OUTER JOIN Register.dbo.Sertifiers C ON A.sertifier = C.id
-WHERE A.number = @number`;
-const getApostilleQuery = `SELECT A.id, A.country, A.date, A.city, A.number, A.active, B.fullname AS signerName, B.position AS signerPosition, B.institution AS signerInst, C.fullname AS sertName, C.position AS sertPosition, C.institution AS sertInst, C.signType FROM Register.dbo.Apostille A
-FULL OUTER JOIN Register.dbo.Signers B ON A.signer = B.id
-FULL OUTER JOIN Register.dbo.Sertifiers C ON A.sertifier = C.id
+const checkApostilleQuery = `SELECT * FROM ProgramEngineering.dbo.Apostilles WHERE number = @number;`;
+/*const checkApostilleQuery = `SELECT A.id, E.countryName, A.date, D.cityName, A.number, A.isActive, B.fullname AS signerName, 
+B.positionId AS signerPosition, B.institutionId AS signerInst, C.fullname AS sertName, 
+C.institutionId AS sertIns FROM ProgramEngineering.dbo.Apostilles A 
+FULL OUTER JOIN ProgramEngineering.dbo.Signers B ON A.signerId = B.id
+FULL OUTER JOIN ProgramEngineering.dbo.Certifiers C ON A.certifierId = C.id 
+INNER JOIN ProgramEngineering.dbo.Cities D ON A.cityId = D.id 
+INNER JOIN ProgramEngineering.dbo.Countries E ON D.countryId = E.id
+WHERE A.number = 234`;*/
+const getApostilleQuery = `SELECT A.id, Countries.countryName, A.date, Cities.cityName, A.number, A.isActive, 
+B.fullname AS signerName, D.positionName AS signerPosition, E.institutionName AS signerInst, 
+C.fullname AS sertName, F.institutionName AS sertInst FROM ProgramEngineering.dbo.Apostilles A
+FULL OUTER JOIN ProgramEngineering.dbo.Signers B ON A.signerId = B.id
+FULL OUTER JOIN ProgramEngineering.dbo.Certifiers C ON A.certifierId = C.id 
+INNER JOIN ProgramEngineering.dbo.Positions D ON B.positionId = D.id 
+INNER JOIN ProgramEngineering.dbo.Institutions E ON B.institutionId = E.id 
+INNER JOIN ProgramEngineering.dbo.Institutions F ON C.institutionId = F.id 
+INNER JOIN ProgramEngineering.dbo.Cities ON A.cityId = Cities.id 
+INNER JOIN ProgramEngineering.dbo.Countries ON Cities.countryId = Countries.id 
 WHERE A.id = @id`;
-const getShortApostilleQuery = 'SELECT * FROM Register.dbo.Apostille WHERE id = @id';
-const userDataQuery = `SELECT * FROM Register.dbo.Staff A
-FULL OUTER JOIN Register.dbo.Passport B ON A.passport = B.id
+const getShortApostilleQuery = 'SELECT * FROM ProgramEngineering.dbo.Apostilles WHERE id = @id';
+const userDataQuery = `SELECT * FROM ProgramEngineering.dbo.Staff A
+INNER JOIN ProgramEngineering.dbo.PassportData B ON A.passportData = B.id
 WHERE email LIKE @email AND password LIKE @password`;
-const userDataUnprotectedQuery = `SELECT * FROM Register.dbo.Staff A
-FULL OUTER JOIN Register.dbo.Passport B ON A.passport = B.id
+const userDataUnprotectedQuery = `SELECT * FROM ProgramEngineering.dbo.Staff A
+INNER JOIN ProgramEngineering.dbo.PassportData B ON A.passportData = B.id
 WHERE email LIKE @email`;
-const getApostillesQuery = `SELECT * FROM Register.dbo.Apostille A
-INNER JOIN Register.dbo.Signers B ON A.signer = B.id
-INNER JOIN Register.dbo.Sertifiers C ON A.sertifier = C.id`;
-const disableApostilleQuery = `UPDATE Register.dbo.Apostille SET active = 1 WHERE id = @id`;
-const editSignerQuery = `UPDATE Register.dbo.Signers SET fullname = @fullname,
-position = @position, institution = @inst WHERE id = @id`;
-const createSignerQuery = `INSERT INTO Register.dbo.Signers (fullname, position, institution)
-VALUES(@fullname, @position, @inst)
+const getApostillesQuery = `SELECT * FROM ProgramEngineering.dbo.Apostilles A
+INNER JOIN ProgramEngineering.dbo.Signers B ON A.signerId = B.id
+INNER JOIN ProgramEngineering.dbo.Certifiers C ON A.certifierId = C.id
+INNER JOIN ProgramEngineering.dbo.Positions D ON B.positionId = D.id
+INNER JOIN ProgramEngineering.dbo.Institutions E ON B.institutionId = E.id 
+INNER JOIN ProgramEngineering.dbo.Institutions F ON C.institutionId = F.id
+INNER JOIN ProgramEngineering.dbo.Cities G ON A.cityId = G.id 
+INNER JOIN ProgramEngineering.dbo.Countries I ON G.countryId = I.id`;
+const disableApostilleQuery = `UPDATE ProgramEngineering.dbo.Apostilles SET isActive = 0 WHERE id = @id`;
+const editSignerQuery = `UPDATE ProgramEngineering.dbo.Signers SET fullname = @fullname,
+positionId = @positionId, institutionId = @institutionId WHERE id = @id`;
+const createSignerQuery = `INSERT INTO ProgramEngineering.dbo.Signers (fullname, positionId, institutionId)
+VALUES(@fullname, @positionId, @institutionId)
 SELECT SCOPE_IDENTITY() AS id`;
-const editSertifierQuery = `UPDATE Register.dbo.Sertifiers SET fullname = @fullname,
-position = @position, institution = @inst, signType = @st WHERE id = @id`;
-const createSertifierQuery = `INSERT INTO Register.dbo.Sertifiers (fullname, position, institution, signType)
-VALUES(@fullname, @position, @inst, @st)
+const editSertifierQuery = `UPDATE ProgramEngineering.dbo.Certifiers SET fullname = @fullname, 
+institutionId = @institutionId WHERE id = @id`;
+const createSertifierQuery = `INSERT INTO ProgramEngineering.dbo.Certifiers (fullname, institutionId)
+VALUES(@fullname, @institutionId)
 SELECT SCOPE_IDENTITY() AS id`
-const editApostilleQuery = `UPDATE Register.dbo.Apostille SET country = @country, date = @date,
-city = @city, number = @number WHERE id = @id`;
-const createApostilleQuery = `INSERT INTO Register.dbo.Apostille (country, date, city, number, active, signer, sertifier)
-VALUES (@country, @date, @city, @number, 0, @signer, @sertifier)
+const editApostilleQuery = `UPDATE ProgramEngineering.dbo.Apostilles 
+SET cityId = (SELECT id FROM ProgramEngineering.dbo.Cities WHERE cityName LIKE @cityName), 
+date = @date, number = @number WHERE id = @id`;
+const createApostilleQuery = `INSERT INTO ProgramEngineering.dbo.Apostilles (signerId, certifierId, date, cityId, number, isActive)
+VALUES (@signerId, @certifierId, @date, 
+(SELECT id FROM ProgramEngineering.dbo.Cities WHERE cityName LIKE @cityName AND 
+countryId = (SELECT id FROM ProgramEngineering.dbo.Countries WHERE countryName LIKE @countryName)), @number, 1)
 SELECT SCOPE_IDENTITY() AS id`;
-const pushManagerAction = 'INSERT INTO Register.dbo.Actions (manager, record, date, type) VALUES (@manager, @record, GETDATE(), @type)';
+const pushManagerAction = `INSERT INTO ProgramEngineering.dbo.Actions 
+(registratorId, apostilleIdBefore, apostilleIdAfter, date, actionTypeId) 
+VALUES (@registratorId, @apostilleIdBefore, @apostilleIdAfter, GETDATE(), @actionTypeId)`;
 
-const getManagersQuery = `SELECT * FROM Register.dbo.Staff A
-INNER JOIN Register.dbo.Passport B ON A.passport = B.id
-WHERE A.role = 1`;
-const disableManagerQuery = `UPDATE Register.dbo.Staff SET active = 1 WHERE id = @id`;
-const enableManagerQuery = "UPDATE Register.dbo.Staff SET active = 0 WHERE id = @id";
-const getManagerQuery = `SELECT * FROM Register.dbo.Staff A
-FULL OUTER JOIN Register.dbo.Passport B ON A.passport = B.id
-WHERE A.id = @id AND role = 1`;
-const editPassportQuery = `UPDATE Register.dbo.Passport SET fullname = @fullname,
-agency = @agency, date = @date, birthdate = @birthdate, number = @number, taxNumber = @taxNumber, series = @series
+const getManagersQuery = `SELECT * FROM ProgramEngineering.dbo.Staff A
+INNER JOIN ProgramEngineering.dbo.PassportData B ON A.passportData = B.id
+WHERE A.roleId = 1`;
+const disableManagerQuery = `UPDATE ProgramEngineering.dbo.Staff SET isActive = 0 WHERE id = @id`;
+const enableManagerQuery = "UPDATE ProgramEngineering.dbo.Staff SET isActive = 1 WHERE id = @id";
+const getManagerQuery = `SELECT * FROM ProgramEngineering.dbo.Staff A
+FULL OUTER JOIN ProgramEngineering.dbo.PassportData B ON A.passportData = B.id
+WHERE A.id = @id AND roleId = 1`;
+const editPassportQuery = `UPDATE ProgramEngineering.dbo.PassportData SET fullname = @fullname,
+organId = @organId, date = @date, birthday = @birthday, passportNumber = @passportNumber, 
+taxpayerNumber = @taxpayerNumber, seriesNumber = @seriesNumber 
 WHERE id = @id`;
-const getShortManagerQuery = "SELECT * FROM Register.dbo.Staff WHERE id = @id";
-const editManagerQuery = `UPDATE Register.dbo.Staff SET email = @email, password = @password
+const getShortManagerQuery = "SELECT * FROM ProgramEngineering.dbo.Staff WHERE id = @id";
+const editManagerQuery = `UPDATE ProgramEngineering.dbo.Staff SET email = @email, password = @password
 WHERE id = @id`;
-const checkPassportQuery = "SELECT * FROM Register.dbo.Passport WHERE number = @number OR taxNumber = @taxNumber";
-const checkManagerQuery = "SELECT * FROM Register.dbo.Staff WHERE email LIKE @email";
-const createPassportDataQuery = `INSERT INTO Register.dbo.Passport (fullname, agency, date, birthdate, number, series, taxNumber)
-VALUES(@fullname, @agency, @date, @birthdate, @number, @series, @taxNumber)
+const checkPassportQuery = `SELECT * FROM ProgramEngineering.dbo.PassportData WHERE 
+passportNumber = @passportNumber OR taxpayerNumber = @taxpayerNumber`;
+const checkManagerQuery = "SELECT * FROM ProgramEngineering.dbo.Staff WHERE email LIKE @email";
+const createPassportDataQuery = `INSERT INTO ProgramEngineering.dbo.PassportData 
+(fullname, birthday, seriesNumber, passportNumber, organId, date, taxpayerNumber) 
+VALUES(@fullname, @birthday, @seriesNumber, @passportNumber, @organId, @date, @taxpayerNumber) 
 SELECT SCOPE_IDENTITY() AS id`;
-const createManagerQuery = `INSERT INTO Register.dbo.Staff (role, email, active, password, passport)
-VALUES (1, @email, 1, @password, @id)`;
-const getAuthActionLogs = `SELECT A.manager, B.passport, C.fullname, A.type, A.date FROM Register.dbo.Actions A
-INNER JOIN Register.dbo.Staff B ON A.manager = B.id
-INNER JOIN Register.dbo.Passport C ON B.passport = C.id
-WHERE record IS NULL ORDER BY A.date DESC`;
-const getRecordsActionLogs = `SELECT A.manager, B.passport, C.fullname, A.type, A.date, D.number, D.date AS apostilleDate FROM Register.dbo.Actions A
-INNER JOIN Register.dbo.Staff B ON A.manager = B.id
-INNER JOIN Register.dbo.Passport C ON B.passport = C.id
-INNER JOIN Register.dbo.Apostille D ON D.id = A.record
-WHERE record IS NOT NULL ORDER BY A.date DESC`;
+const createManagerQuery = `INSERT INTO ProgramEngineering.dbo.Staff (isActive, passportData, roleId, email, password) 
+VALUES (1, @passportData, 1, @email, @password)`;
+const getAuthActionLogs = `SELECT A.registratorId, B.passportData, C.fullname, D.actionName, A.date FROM ProgramEngineering.dbo.Actions A
+INNER JOIN ProgramEngineering.dbo.Staff B ON A.registratorId = B.id
+INNER JOIN ProgramEngineering.dbo.PassportData C ON B.passportData = C.id 
+INNER JOIN ProgramEngineering.dbo.ActionTypes D ON A.actionTypeId = D.id
+WHERE A.apostilleIdBefore IS NULL AND A.apostilleIdAfter IS NULL ORDER BY A.date DESC`;
+const getRecordsActionLogs = `SELECT A.registratorId, B.passportData, C.fullname, D.actionName, A.date, 
+A.apostilleIdBefore AS apostilleId, E.date AS apostilleDate FROM ProgramEngineering.dbo.Actions A
+INNER JOIN ProgramEngineering.dbo.Staff B ON A.registratorId = B.id
+INNER JOIN ProgramEngineering.dbo.PassportData C ON B.passportData = C.id
+INNER JOIN ProgramEngineering.dbo.ActionTypes D ON A.actionTypeId = D.id
+INNER JOIN ProgramEngineering.dbo.Apostilles E ON E.id = A.apostilleIdBefore 
+--INNER JOIN ProgramEngineering.dbo.Apostilles F ON F.id = A.apostilleIdAfter
+WHERE A.apostilleIdBefore IS NOT NULL AND A.apostilleIdAfter IS NOT NULL ORDER BY A.date DESC`;
+
+const getPositionIdByName = 'SELECT id FROM ProgramEngineering.dbo.Positions WHERE positionName LIKE @positionName';
+const getInsitutionIdByName = 'SELECT id FROM ProgramEngineering.dbo.Institutions WHERE institutionName LIKE @institutionName';
 
 module.exports = {
     findApostilleQuery,
@@ -97,5 +136,7 @@ module.exports = {
     createPassportDataQuery,
     createManagerQuery,
     getAuthActionLogs,
-    getRecordsActionLogs
+    getRecordsActionLogs,
+    getPositionIdByName,
+    getInsitutionIdByName
 }

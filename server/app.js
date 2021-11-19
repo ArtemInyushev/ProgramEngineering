@@ -24,7 +24,7 @@ app.use('/api/v1/managers', managersRouter);
 app.use('/api/v1/apostilles', apostillesRouter);
 
 app.listen(process.env.PORT, () => {
-    console.log(`Connected to port: ${process.env.PORT}`)
+    console.log(`Started on ${process.env.PORT} port`)
 })
 
 app.get('*/images/:filename', function(req,res) {
