@@ -10,7 +10,6 @@ import CreateApostille from '../../pages/CreateApostille';
 import EditApostille from '../../pages/EditApostille';
 import Managers from '../../pages/Managers';
 import Actions from '../../pages/Actions';
-import logo from '../../assets/logom_old.png';
 import withAuth from '../../hocs/withAuth';
 
 function PrivateRoute ({component: Component, authed, ...rest}) {
@@ -19,7 +18,7 @@ function PrivateRoute ({component: Component, authed, ...rest}) {
         {...rest}
         render={(props) => authed === true
           ? <Component {...props} />
-          : <Redirect to={{pathname: '/login'}} />}
+          : <Redirect to={{pathname: '/'}} />}
       />
     )
 }
@@ -56,7 +55,7 @@ const Content = ({ hasAuth, login }) => {
                 </h2>*/}
             </div>
             <Switch>
-                <PrivateRoute authed={init} exact path="/" component={Index} />
+                <Route exact path="/" component={Index} />
                 <PrivateRoute authed={init} path="/apostilles" component={Apostilles} />
                 <Route path="/login" component={Login} />
                 <PrivateRoute authed={init} path="/edit/manager/:id" component={EditManager} />
