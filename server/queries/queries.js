@@ -97,11 +97,11 @@ INNER JOIN ProgramEngineering.dbo.PassportData C ON B.passportData = C.id
 INNER JOIN ProgramEngineering.dbo.ActionTypes D ON A.actionTypeId = D.id
 WHERE A.apostilleIdBefore IS NULL AND A.apostilleIdAfter IS NULL ORDER BY A.date DESC`;
 const getRecordsActionLogs = `SELECT A.registratorId, B.passportData, C.fullname, D.actionName, A.date, 
-A.apostilleIdBefore AS apostilleId, E.date AS apostilleDate FROM ProgramEngineering.dbo.Actions A
+A.apostilleIdAfter AS apostilleId, E.date AS apostilleDate FROM ProgramEngineering.dbo.Actions A
 INNER JOIN ProgramEngineering.dbo.Staff B ON A.registratorId = B.id
 INNER JOIN ProgramEngineering.dbo.PassportData C ON B.passportData = C.id
 INNER JOIN ProgramEngineering.dbo.ActionTypes D ON A.actionTypeId = D.id
-INNER JOIN ProgramEngineering.dbo.Apostilles E ON E.id = A.apostilleIdBefore 
+INNER JOIN ProgramEngineering.dbo.Apostilles E ON E.number = A.apostilleIdAfter 
 --INNER JOIN ProgramEngineering.dbo.Apostilles F ON F.id = A.apostilleIdAfter
 WHERE A.apostilleIdBefore IS NOT NULL AND A.apostilleIdAfter IS NOT NULL ORDER BY A.date DESC`;
 

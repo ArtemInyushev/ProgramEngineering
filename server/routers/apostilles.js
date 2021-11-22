@@ -69,8 +69,8 @@ router.post('/edit', passport.authenticate('jwt', { session: false }), async (re
             return;
         }
         await runPreparedQuery(q.editSignerQuery, 
-            { id: tr.recordset[0].signerId, fullname: signerName, positionId: signerPosId.recordset[0].id, institutionId: signerInstId.recordset[0].id });
-        await runPreparedQuery(q.editSertifierQuery, { id: tr.recordset[0].certifierId, fullname: sertName, institutionId: certifierInstId.recordset[0].id });
+            { id: pr.recordset[0].signerId, fullname: signerName, positionId: signerPosId.recordset[0].id, institutionId: signerInstId.recordset[0].id });
+        await runPreparedQuery(q.editSertifierQuery, { id: pr.recordset[0].certifierId, fullname: sertName, institutionId: certifierInstId.recordset[0].id });
         let r = await runPreparedQuery(q.editApostilleQuery, { id, date, cityName, number });
         await runPreparedQuery(q.pushManagerAction, 
             { registratorId: req.user.id[0], apostilleIdBefore: pr.recordset[0].number, apostilleIdAfter: number, actionTypeId: 4 });
