@@ -10,7 +10,7 @@ import CreateApostille from '../../pages/CreateApostille';
 import EditApostille from '../../pages/EditApostille';
 import Managers from '../../pages/Managers';
 import Actions from '../../pages/Actions';
-import logo from '../../assets/logom.png';
+import logo from '../../assets/logom_old.png';
 import withAuth from '../../hocs/withAuth';
 
 function PrivateRoute ({component: Component, authed, ...rest}) {
@@ -50,8 +50,10 @@ const Content = ({ hasAuth, login }) => {
     return (
         <>
             <div className="logo-wrap container position img-bg mt-4">
-                <img src={logo} alt="logo" />
-                <h2 style={{ paddingLeft: '10px' }} className="text-dark text-center mt-3 mb-3 pb-5 heading">Електронний реєстр апостилів</h2>
+                {/*<img src={logo} alt="logo" style={{ float: 'right' }}/>
+                <h2 style={{ paddingLeft: '10px' }} className="text-dark text-center mt-3 mb-3 pb-5 heading">
+                    Електронний реєстр апостилів
+                </h2>*/}
             </div>
             <Switch>
                 <PrivateRoute authed={init} exact path="/" component={Index} />

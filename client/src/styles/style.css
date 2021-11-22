@@ -1,5 +1,6 @@
 .img-bg {
-    background: url('../assets/prapor.png');
+    /*background: url('../assets/prapor.png');*/
+    background: url('../assets/logom.png');
     background-size: 100%;
     background-position: center;
     background-repeat: no-repeat;
