@@ -54,6 +54,10 @@ router.post('/login', async (req, res) => {
         if(checkUser.recordset.length > 0) {
             const correctPassword = checkUser.recordset[0].password === password;
             if(correctPassword) {
+                if(!checkUser.recordset[0].isActive){
+                    res.status(200).json({ resultCode: 1, message: "Inactive" });
+                    return;
+                }
                 if(checkUser.recordset[0].roleId === 1) {
                     await runPreparedQuery(q.pushManagerAction, 
                         { registratorId: checkUser.recordset[0].id[0], apostilleIdBefore: null, apostilleIdAfter: null, actionTypeId: 1 });
