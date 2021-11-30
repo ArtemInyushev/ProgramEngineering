@@ -44,7 +44,8 @@ INNER JOIN ProgramEngineering.dbo.Institutions E ON B.institutionId = E.id
 INNER JOIN ProgramEngineering.dbo.Institutions F ON C.institutionId = F.id
 INNER JOIN ProgramEngineering.dbo.Cities G ON A.cityId = G.id 
 INNER JOIN ProgramEngineering.dbo.Countries I ON G.countryId = I.id`;
-const disableApostilleQuery = `UPDATE ProgramEngineering.dbo.Apostilles SET isActive = 0 WHERE id = @id`;
+const disableApostilleQuery = `UPDATE ProgramEngineering.dbo.Apostilles SET isActive = 0 WHERE id = @id 
+SELECT number FROM ProgramEngineering.dbo.Apostilles WHERE id = @id;`;
 const editSignerQuery = `UPDATE ProgramEngineering.dbo.Signers SET fullname = @fullname,
 positionId = @positionId, institutionId = @institutionId WHERE id = @id`;
 const createSignerQuery = `INSERT INTO ProgramEngineering.dbo.Signers (fullname, positionId, institutionId)

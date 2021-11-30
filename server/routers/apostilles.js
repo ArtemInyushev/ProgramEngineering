@@ -30,8 +30,9 @@ router.post('/disable', passport.authenticate('jwt', { session: false }), async 
         let { id } = req.body;
         let r = await runPreparedQuery(q.disableApostilleQuery, { id });
         if(r.rowsAffected > 0) {
+            const number = r.recordset[0].number;
             await runPreparedQuery(q.pushManagerAction, 
-                { registratorId: req.user.id[0], apostilleIdBefore: id, apostilleIdAfter: id, actionTypeId: 3 });
+                { registratorId: req.user.id[0], apostilleIdBefore: number, apostilleIdAfter: number, actionTypeId: 3 });
             res.status(200).json({ resultCode: 0 });
         } else {
             res.status(200).json({ resultCode: 1 });
@@ -85,14 +86,15 @@ router.post('/edit', passport.authenticate('jwt', { session: false }), async (re
 
 router.post('/create', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
-        let { signerName, signerPosition, signerInst, sertName, sertPosition, sertInst, signType, ...fields } = req.body;
+        let { signerName, signerPosition, signerInst, sertName, sertPosition, sertInst, signType, number, ...fields } = req.body;
         let sgr = await runPreparedQuery(q.createSignerQuery, { fullname: signerName, positionId: signerPosition, institutionId: signerInst });
         let str = await runPreparedQuery(q.createSertifierQuery, { fullname: sertName, institutionId: sertInst });
-        let r = await runPreparedQuery(q.createApostilleQuery, { ...fields, signerId: sgr.recordset[0].id, certifierId: str.recordset[0].id });
+        let r = await runPreparedQuery(q.createApostilleQuery, 
+            { ...fields, signerId: sgr.recordset[0].id, certifierId: str.recordset[0].id, number: number });
         
         if(r.rowsAffected.length > 0) {
             await runPreparedQuery(q.pushManagerAction, 
-                { registratorId: req.user.id[0], apostilleIdBefore:  r.recordset[0].id, apostilleIdAfter:  r.recordset[0].id, actionTypeId: 5 });
+                { registratorId: req.user.id[0], apostilleIdBefore:  number, apostilleIdAfter:  number, actionTypeId: 5 });
             res.status(200).json({ resultCode: 0 });
         }
         else res.status(200).json({ resultCode: 1 });
